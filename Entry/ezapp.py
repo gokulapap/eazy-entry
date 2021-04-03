@@ -30,7 +30,7 @@ def autoenter():
      val = sheet.cell(row=i, column=2).value
      marks.append(val)
 
-   webbrowser.get('chrome').open("http://eazyentry.ezyro.com")
+   webbrowser.get('chrome').open("http://ezentry.ezyro.com")
    sleep(5)
    py.scroll(-200)
    sleep(1)
@@ -67,7 +67,7 @@ def aboutmenu():
    
    Label(about, text=" About EZ Entry", font = ('Times','20'), fg="Green",anchor='e').pack()
    Label(about, text="\n\tEZ Entry is an Applicaion for Entering the Marks from\n  Physical Papers to the websites using automation, This uses the scanned Sheets\n and Crops the Required portion and converts the cropped image to text and does\nthe same for all others and saves in Excel file and Enter to the Target website using \n Automation. This was build using Python and later it was converted to Windows \nExecutable file which is in GUI and User friendly", font=('Times',14)).pack()
-   Label(about, text="\nDeveloped by :\n\n1.GOKUL A.P\n2.MAHESH ARAVINTH V\n3.VARUN RAJPUT\n4.YASHWANT C.M",font=('Times',14)).pack()
+   Label(about, text="\nDeveloped by :\n\n1.GOKUL A.P",font=('Times',14)).pack()
 
 
 def logininfo():
