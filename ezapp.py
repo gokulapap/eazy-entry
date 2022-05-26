@@ -54,6 +54,7 @@ def autoenter():
       inp3 = driver.find_element_by_xpath(tpath)
       inp3.send_keys(marks[i])
 
+   sleep(6)
    driver.close()
    l4.configure(text = "Marks are Updated to Website Successful !")   
 
