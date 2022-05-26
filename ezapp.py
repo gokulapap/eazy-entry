@@ -12,34 +12,49 @@ import random
 import pytesseract as tess
 from openpyxl import Workbook,load_workbook
 import numpy
-
-brpath = r"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
-webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(brpath))
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.keys import Keys
 
 def autoenter():
    num = int1.get()
    path = os.getcwd()+"\\marks.xlsx"
    marks = []
-   f = open("userpass.txt", "r")
-   user = f.readline()
-   pas = f.readline()
-   f.close()
+   try:
+      f = open("userpass.txt", "r")
+      user = f.readline()
+      pas = f.readline()
+      f.close()
+   except:
+      l4.configure(text= "Save the Login creds to continue !")
+      return
    wb = load_workbook(path)
    sheet = wb['Sheet']
    for i in range(1, num+1):
      val = sheet.cell(row=i, column=2).value
      marks.append(val)
 
-   webbrowser.get('chrome').open("http://ezentry.ezyro.com")
-   sleep(5)
-   py.scroll(-200)
+   ser = "chromedriver.exe"
+   driver = webdriver.Chrome(executable_path=ser)
+   driver.get("http://tcenet.ezyro.com")
    sleep(1)
-   x = 740
-   y = 220
-   for j in range(0,num):
-     y = y+45
-     py.click(x,y)
-     py.write(marks[j])
+   #login
+   inp1 = driver.find_element_by_xpath("/html/body/div/div/input[1]")
+   inp1.send_keys(user)
+   inp2 = driver.find_element_by_xpath("/html/body/div/div/input[2]")
+   inp2.send_keys(pas)
+   sleep(0.5)
+   login = driver.find_element_by_xpath("/html/body/div/div/button/a")
+   login.click()
+   sleep(1)
+
+   #fill-data
+   for i in range(10):
+      tpath = "/html/body/div/table/tbody/tr[{}]/td[2]/input".format(str(i+2)) 
+      inp3 = driver.find_element_by_xpath(tpath)
+      inp3.send_keys(marks[i])
+
+   driver.close()
    l4.configure(text = "Marks are Updated to Website Successful !")   
 
 def helpmenu():
@@ -103,7 +118,7 @@ def excel():
    col = ['B{}'.format(i) for i in range(1,num+1)]
    wb = Workbook()
    ws = wb.active
-   tess.pytesseract.tesseract_cmd = "C:\\Users\\Gokul\\AppData\\Local\\Tesseract-OCR\\tesseract.exe"
+   tess.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
    
    for i in range(1, num+1):
       img = Image.open(path.format(i))
@@ -119,13 +134,13 @@ def excel():
    l4.configure(text = " All marks are Saved in Excel , Click (view excel) to check ")
 
 def co_crop():
-   path = os.getcwd()+"\\papers\\1.jpg"
+   path = os.getcwd()+"\\papers\\1.png"
    filename = '1'
    os.system("python crop.py"+' '+path+' '+filename)
    cropall()
 
 def cropall():
-   path =  os.getcwd()+"\\papers\\{}.jpg"
+   path =  os.getcwd()+"\\papers\\{}.png"
    num = int1.get()
    file = open("co-ordinates.txt","r")
    a = file.readline()
